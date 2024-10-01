@@ -1,0 +1,62 @@
+{
+  "name": "json-schema-ui-editor",
+  "version": "0.0.1",
+  "description": "React component to edit json schema in a UI.",
+  "keywords": [
+    "react",
+    "jsonschema",
+    "json"
+  ],
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "npm run build:lib && npm run build:docs",
+    "build:docs": "ladle build -o docs --base ./",
+    "build:lib": "tsup",
+    "dev": "ladle serve",
+    "preview": "ladle preview"
+  },
+  "tsup": {
+    "dts": true,
+    "format": [
+      "esm"
+    ],
+    "clean": true,
+    "minify": true,
+    "external": [
+      "react",
+      "react-dom"
+    ],
+    "splitting": true,
+    "treeshake": true,
+    "entryPoints": [
+      "src/index.ts"
+    ]
+  },
+  "author": "Hugo LAPLACE-BUILHE",
+  "license": "MIT",
+  "devDependencies": {
+    "@ladle/react": "^4.1.1",
+    "@types/lodash": "^4.17.7",
+    "@types/react": "^18.3.8",
+    "@types/react-dom": "^18.3.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "tsup": "^8.3.0",
+    "typescript": "^5.6.2"
+  },
+  "peerDependencies": {
+    "react": "^18",
+    "react-dom": "^18"
+  },
+  "dependencies": {
+    "lodash": "^4.17.21"
+  },
+  "resolutions": {
+    "string-width": "4.2.3"
+  }
+}

@@ -1,0 +1,73 @@
+import React from "react";
+import type { Story, StoryDefault } from "@ladle/react";
+import {
+  JsonSchemaEditor,
+  type JsonSchemaEditorProps,
+} from "../components/JsonSchemaEditor";
+import { schema1 } from "../fixtures/schemaExamples";
+
+export default {
+  title: "Editor",
+} satisfies StoryDefault<JsonSchemaEditorProps>;
+
+const Editor: Story<JsonSchemaEditorProps> = (args) => (
+  <JsonSchemaEditor {...args} />
+);
+
+export const Default = Editor.bind({});
+Default.args = {
+  initialSchema: schema1,
+  renderAddPropertyButton: ({ onClick }) => (
+    <button onClick={onClick}>+</button>
+  ),
+  renderRemovePropertyButton: ({ onClick }) => (
+    <button onClick={onClick}>Remove</button>
+  ),
+  renderInput: ({ onChange, value, type, field, options }) => {
+    if (type === "string") {
+      return (
+        <input
+          type="text"
+          value={value}
+          onChange={(e) => onChange(e.target.value || "")}
+        />
+      );
+    }
+    if (type === "float" || type === "integer") {
+      return (
+        <input
+          type="number"
+          value={value}
+          onChange={(e) => onChange(e.target.value || "")}
+        />
+      );
+    }
+    if (type === "bigString") {
+      return (
+        <textarea
+          rows={3}
+          cols={50}
+          value={value}
+          onChange={(e) => onChange(e.target.value || "")}
+        />
+      );
+    }
+    if (type === "select") {
+      return (
+        <select
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          name={field}
+          id={`${field}-select`}
+        >
+          {options?.map((opt) => (
+            <option value={opt}>{opt}</option>
+          ))}
+        </select>
+      );
+    }
+    if(type === "enum") {
+      
+    }
+  },
+};
