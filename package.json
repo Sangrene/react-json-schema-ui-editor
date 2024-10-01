@@ -1,5 +1,5 @@
 {
-  "name": "json-schema-ui-editor",
+  "name": "react-json-schema-ui-editor",
   "version": "0.0.1",
   "description": "React component to edit json schema in a UI.",
   "keywords": [
