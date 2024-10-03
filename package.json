@@ -1,6 +1,6 @@
 {
   "name": "react-json-schema-ui-editor",
-  "version": "0.0.3",
+  "version": "0.0.6",
   "description": "React component to edit json schema in a UI.",
   "keywords": [
     "react",
@@ -16,7 +16,7 @@
   "scripts": {
     "build": "npm run build:lib && npm run build:docs",
     "build:docs": "ladle build -o docs --base ./",
-    "build:lib": "tsup --format cjs,esm --dts --clean --sourcemap",
+    "build:lib": "tsup",
     "dev": "ladle serve",
     "preview": "ladle preview"
   },

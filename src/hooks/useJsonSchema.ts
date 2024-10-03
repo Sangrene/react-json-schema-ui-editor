@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { type JSONSchema7 } from "../jsonSchemaTypings";
-import { get, setWith, clone, split } from "lodash";
+import get from "lodash/get";
+import setWith from "lodash/setWith";
+import clone from "lodash/clone";
 
 export const useJsonSchema = (init: JSONSchema7 = {}) => {
   const [schema, setSchema] = useState(init);

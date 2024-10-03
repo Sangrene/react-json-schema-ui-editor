@@ -11,4 +11,5 @@ export default defineConfig({
   clean: true,
   // Sourcemaps for easier debugging.
   sourcemap: true,
+  format: ["cjs", "esm"],
 });
