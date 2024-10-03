@@ -8,7 +8,7 @@ import type {
 
 export interface InputInputParams {
   onChange: (value: string | number | string[]) => void;
-  value?: string | number;
+  value?: string | number | string[];
   field: (typeof jsonSchemaPossibleFields)[number];
   options?: string[];
   type: (typeof jsonSchemaPossibleFieldType)[number];
@@ -18,12 +18,16 @@ export interface ButtonInputParams {
   onClick: () => void;
 }
 
+export interface PropertyNameInputParams {
+  propertyName: string;
+}
 export interface JsonSchemaEditorProps {
   initialSchema?: JSONSchema7;
   path?: string;
   renderInput: (params: InputInputParams) => React.ReactNode;
   renderAddPropertyButton: (p: ButtonInputParams) => React.ReactNode;
   renderRemovePropertyButton: (p: ButtonInputParams) => React.ReactNode;
+  renderPropertyName: (p: PropertyNameInputParams) => React.ReactNode;
 }
 
 export const JsonSchemaEditor = ({
@@ -31,6 +35,7 @@ export const JsonSchemaEditor = ({
   renderInput,
   renderAddPropertyButton,
   renderRemovePropertyButton,
+  renderPropertyName
 }: JsonSchemaEditorProps) => {
   return (
     <JsonSchemaContextProvider init={initialSchema}>
@@ -38,6 +43,7 @@ export const JsonSchemaEditor = ({
         renderInput={renderInput}
         renderAddPropertyButton={renderAddPropertyButton}
         renderRemovePropertyButton={renderRemovePropertyButton}
+        renderPropertyName={renderPropertyName}
       />
     </JsonSchemaContextProvider>
   );

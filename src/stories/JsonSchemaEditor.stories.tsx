@@ -17,6 +17,9 @@ const Editor: Story<JsonSchemaEditorProps> = (args) => (
 export const Default = Editor.bind({});
 Default.args = {
   initialSchema: schema1,
+  renderPropertyName: ({ propertyName }) => (
+    <h6 style={{ color: "red" }}>{propertyName}</h6>
+  ),
   renderAddPropertyButton: ({ onClick }) => (
     <button onClick={onClick}>+</button>
   ),
@@ -66,8 +69,8 @@ Default.args = {
         </select>
       );
     }
-    if(type === "enum") {
-      
+    if (type === "enum") {
+      return <>ENUM</>;
     }
   },
 };

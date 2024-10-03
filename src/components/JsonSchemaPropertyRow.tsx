@@ -1,6 +1,10 @@
 import { useState } from "react";
 import { useJsonSchemaContext } from "./JsonSchemaContext";
-import type { ButtonInputParams, InputInputParams } from "./JsonSchemaEditor";
+import type {
+  ButtonInputParams,
+  InputInputParams,
+  PropertyNameInputParams,
+} from "./JsonSchemaEditor";
 import type { JSONSchema7TypeName } from "jsonSchemaTypings";
 import { jsonSchemaAvailableTypes } from "jsonSchemaDescriptor";
 import { JsonSchemaAddProperty } from "./JsonSchemaAddProperty";
@@ -11,6 +15,7 @@ export interface JsonSchemaPropertyRowProps {
   renderInput: (p: InputInputParams) => React.ReactNode;
   renderAddPropertyButton: (p: ButtonInputParams) => React.ReactNode;
   renderRemovePropertyButton: (p: ButtonInputParams) => React.ReactNode;
+  renderPropertyName?: (p: PropertyNameInputParams) => React.ReactNode;
   name?: string;
 }
 
@@ -20,10 +25,10 @@ export const JsonSchemaPropertyRow = ({
   name,
   renderAddPropertyButton,
   renderRemovePropertyButton,
+  renderPropertyName,
 }: JsonSchemaPropertyRowProps) => {
   const {
     derived,
-    schema,
     actions: { setSchemaProperty, removeSchemaProperty },
   } = useJsonSchemaContext();
   const [areChildrenCollapsed, setChildrenCollapsed] = useState(true);
@@ -37,7 +42,9 @@ export const JsonSchemaPropertyRow = ({
       style={{ marginLeft: path ? "16px" : 0, marginTop: path ? "16px" : 0 }}
     >
       <div style={{ display: "flex", alignItems: "start" }}>
-        {name}
+        {name &&
+          renderPropertyName &&
+          renderPropertyName({ propertyName: name })}
 
         {renderInput({
           onChange: (value) => {
@@ -66,14 +73,17 @@ export const JsonSchemaPropertyRow = ({
             name={name}
           />
         )}
-        {renderInput({
-          onChange: (value) => {
-            setSchemaProperty(`${path}.enum`, value as string[]);
-          },
-          value: currentRowState.type,
-          type: "enum",
-          field: "enum",
-        })}
+        {currentRowState.type &&
+          !["object", "array", "boolean"].includes(currentRowState.type) &&
+          renderInput({
+            onChange: (value) => {
+              setSchemaProperty(`${path}.enum`, value as string[]);
+            },
+            value: currentRowState.type,
+            type: "enum",
+            field: "enum",
+          })}
+
         {currentRowIsObject && (
           <JsonSchemaAddProperty
             renderAddPropertyButton={renderAddPropertyButton}
@@ -103,6 +113,7 @@ export const JsonSchemaPropertyRow = ({
                 renderInput={renderInput}
                 renderAddPropertyButton={renderAddPropertyButton}
                 renderRemovePropertyButton={renderRemovePropertyButton}
+                renderPropertyName={renderPropertyName}
                 key={prop}
                 path={`${path ? `${path}.` : ""}properties.${prop}`}
                 name={prop}
@@ -113,6 +124,7 @@ export const JsonSchemaPropertyRow = ({
               renderInput={renderInput}
               renderAddPropertyButton={renderAddPropertyButton}
               renderRemovePropertyButton={renderRemovePropertyButton}
+              renderPropertyName={renderPropertyName}
               path={`${path ? `${path}.` : ""}items`}
               name={name}
             />
