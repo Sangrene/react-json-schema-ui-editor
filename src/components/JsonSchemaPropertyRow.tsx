@@ -79,7 +79,7 @@ export const JsonSchemaPropertyRow = ({
             onChange: (value) => {
               setSchemaProperty(`${path}.enum`, value as string[]);
             },
-            value: currentRowState.type,
+            value: currentRowState.enum as string[],
             type: "enum",
             field: "enum",
           })}
