@@ -4,8 +4,12 @@ import _ from "lodash";
 
 export const useJsonSchema = (init: JSONSchema7 = {}) => {
   const [schema, setSchema] = useState(init);
+
+  const getPropertyPath = (path?: string) => {
+    return `${path ? `${path}.` : ""}` as `${string}.`;
+  };
   const setSchemaProperty = <K extends keyof JSONSchema7>(
-    path: `${string}.${K}`,
+    path: `${string}.${K}` | K,
     property: JSONSchema7[K]
   ) => {
     setSchema((prev) => _.setWith(_.clone(prev), path, property, _.clone));
@@ -66,6 +70,7 @@ export const useJsonSchema = (init: JSONSchema7 = {}) => {
     derived: {
       getSchemaProperty,
       getPathState,
+      getPropertyPath,
     },
   };
 };

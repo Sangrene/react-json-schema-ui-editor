@@ -28,15 +28,14 @@ export const JsonSchemaPropertyRow = ({
   renderPropertyName,
 }: JsonSchemaPropertyRowProps) => {
   const {
-    derived,
+    derived: { getPathState, getPropertyPath },
     actions: { setSchemaProperty, removeSchemaProperty },
   } = useJsonSchemaContext();
   const [areChildrenCollapsed, setChildrenCollapsed] = useState(true);
 
-  const currentRowState = derived.getPathState(path);
+  const currentRowState = getPathState(path);
   const currentRowIsObject = currentRowState.type === "object";
   const currentRowIsArray = currentRowState.type === "array";
-
   return (
     <div
       style={{ marginLeft: path ? "16px" : 0, marginTop: path ? "16px" : 0 }}
@@ -48,7 +47,7 @@ export const JsonSchemaPropertyRow = ({
 
         {renderInput({
           onChange: (value) => {
-            setSchemaProperty(`${path}.type`, value as JSONSchema7TypeName);
+            setSchemaProperty(`${getPropertyPath(path)}type`, value as JSONSchema7TypeName);
           },
           value: currentRowState.type,
           type: "select",
@@ -57,7 +56,7 @@ export const JsonSchemaPropertyRow = ({
         })}
         {renderInput({
           onChange: (value) => {
-            setSchemaProperty(`${path}.description`, value as string);
+            setSchemaProperty(`${getPropertyPath(path)}description`, value as string);
           },
           value: currentRowState.description,
           type: "bigString",
@@ -77,7 +76,7 @@ export const JsonSchemaPropertyRow = ({
           !["object", "array", "boolean"].includes(currentRowState.type) &&
           renderInput({
             onChange: (value) => {
-              setSchemaProperty(`${path}.enum`, value as string[]);
+              setSchemaProperty(`${getPropertyPath(path)}enum`, value as string[]);
             },
             value: currentRowState.enum as string[],
             type: "enum",
@@ -115,7 +114,7 @@ export const JsonSchemaPropertyRow = ({
                 renderRemovePropertyButton={renderRemovePropertyButton}
                 renderPropertyName={renderPropertyName}
                 key={prop}
-                path={`${path ? `${path}.` : ""}properties.${prop}`}
+                path={`${getPropertyPath(path)}properties.${prop}`}
                 name={prop}
               />
             ))}
@@ -125,7 +124,7 @@ export const JsonSchemaPropertyRow = ({
               renderAddPropertyButton={renderAddPropertyButton}
               renderRemovePropertyButton={renderRemovePropertyButton}
               renderPropertyName={renderPropertyName}
-              path={`${path ? `${path}.` : ""}items`}
+              path={`${getPropertyPath(path)}items`}
               name={name}
             />
           )}
