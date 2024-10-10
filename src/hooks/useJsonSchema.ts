@@ -1,9 +1,22 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { type JSONSchema7 } from "../jsonSchemaTypings";
 import _ from "lodash";
 
-export const useJsonSchema = (init: JSONSchema7 = {}) => {
+export const useJsonSchema = (
+  init: JSONSchema7 = {},
+  onChange?: (schema: JSONSchema7) => any
+) => {
+  const isFirstRender = useRef(true);
+  useEffect(() => {
+    isFirstRender.current = false;
+  }, []);
+
   const [schema, setSchema] = useState(init);
+  useEffect(() => {
+    if (onChange && !isFirstRender.current) {
+      onChange(schema);
+    }
+  }, [schema]);
 
   const getPropertyPath = (path?: string) => {
     return `${path ? `${path}.` : ""}` as `${string}.`;

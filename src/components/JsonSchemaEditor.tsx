@@ -28,6 +28,7 @@ export interface JsonSchemaEditorProps {
   renderAddPropertyButton: (p: ButtonInputParams) => React.ReactNode;
   renderRemovePropertyButton: (p: ButtonInputParams) => React.ReactNode;
   renderPropertyName: (p: PropertyNameInputParams) => React.ReactNode;
+  onChange?: (json: JSONSchema7) => any;
 }
 
 export const JsonSchemaEditor = ({
@@ -35,10 +36,11 @@ export const JsonSchemaEditor = ({
   renderInput,
   renderAddPropertyButton,
   renderRemovePropertyButton,
-  renderPropertyName
+  renderPropertyName,
+  onChange,
 }: JsonSchemaEditorProps) => {
   return (
-    <JsonSchemaContextProvider init={initialSchema}>
+    <JsonSchemaContextProvider init={initialSchema} onChange={onChange}>
       <JsonSchemaPropertyRow
         renderInput={renderInput}
         renderAddPropertyButton={renderAddPropertyButton}

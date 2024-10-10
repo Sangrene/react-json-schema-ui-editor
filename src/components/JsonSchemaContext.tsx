@@ -7,20 +7,22 @@ const JsonSchemaContext = createContext<ReturnType<typeof useJsonSchema>>({
   actions: {
     setSchemaProperty: () => {},
     addPropertyToObject: () => {},
-    removeSchemaProperty: () => {}
+    removeSchemaProperty: () => {},
   },
   schema: {},
   derived: {
     getSchemaProperty: () => ({}),
-    getPathState: () => ({})
+    getPathState: () => ({}),
+    getPropertyPath: () => ".",
   },
 });
 
 export const JsonSchemaContextProvider: React.FC<{
   children?: React.ReactNode;
   init?: JSONSchema7;
-}> = ({ children, init }) => {
-  const value = useJsonSchema(init);
+  onChange?: (json: JSONSchema7) => any;
+}> = ({ children, init, onChange }) => {
+  const value = useJsonSchema(init, onChange);
   return (
     <JsonSchemaContext.Provider value={value}>
       {children}
