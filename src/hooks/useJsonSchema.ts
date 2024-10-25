@@ -25,7 +25,21 @@ export const useJsonSchema = (
     path: `${string}.${K}` | K,
     property: JSONSchema7[K]
   ) => {
-    setSchema((prev) => _.setWith(_.clone(prev), path, property, _.clone));
+    setSchema((prev) => {
+      const splittedPath = path.split(".");
+      if (
+        splittedPath[splittedPath.length - 1] === "type" &&
+        property === "array"
+      ) {
+        return _.setWith(
+          _.setWith(_.clone(prev), path, property, _.clone),
+          `${getPropertyPath(splittedPath.slice(0, -1).join("."))}items`,
+          { type: "string" },
+          _.clone
+        );
+      }
+      return _.setWith(_.clone(prev), path, property, _.clone);
+    });
   };
 
   const removeSchemaProperty = (propertyPath: string) => {

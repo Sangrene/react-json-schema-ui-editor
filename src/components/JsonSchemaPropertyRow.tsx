@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useJsonSchemaContext } from "./JsonSchemaContext";
 import type {
   ButtonInputParams,
@@ -17,6 +17,8 @@ export interface JsonSchemaPropertyRowProps {
   renderRemovePropertyButton: (p: ButtonInputParams) => React.ReactNode;
   renderPropertyName?: (p: PropertyNameInputParams) => React.ReactNode;
   name?: string;
+  key?: string;
+  isArrayItems?: boolean;
 }
 
 export const JsonSchemaPropertyRow = ({
@@ -26,16 +28,17 @@ export const JsonSchemaPropertyRow = ({
   renderAddPropertyButton,
   renderRemovePropertyButton,
   renderPropertyName,
+  isArrayItems,
 }: JsonSchemaPropertyRowProps) => {
   const {
     derived: { getPathState, getPropertyPath },
     actions: { setSchemaProperty, removeSchemaProperty },
   } = useJsonSchemaContext();
-  const [areChildrenCollapsed, setChildrenCollapsed] = useState(true);
 
   const currentRowState = getPathState(path);
   const currentRowIsObject = currentRowState.type === "object";
   const currentRowIsArray = currentRowState.type === "array";
+
   return (
     <div
       style={{ marginLeft: path ? "16px" : 0, marginTop: path ? "16px" : 0 }}
@@ -47,7 +50,10 @@ export const JsonSchemaPropertyRow = ({
 
         {renderInput({
           onChange: (value) => {
-            setSchemaProperty(`${getPropertyPath(path)}type`, value as JSONSchema7TypeName);
+            setSchemaProperty(
+              `${getPropertyPath(path)}type`,
+              value as JSONSchema7TypeName
+            );
           },
           value: currentRowState.type,
           type: "select",
@@ -56,7 +62,10 @@ export const JsonSchemaPropertyRow = ({
         })}
         {renderInput({
           onChange: (value) => {
-            setSchemaProperty(`${getPropertyPath(path)}description`, value as string);
+            setSchemaProperty(
+              `${getPropertyPath(path)}description`,
+              value as string
+            );
           },
           value: currentRowState.description,
           type: "bigString",
@@ -76,7 +85,10 @@ export const JsonSchemaPropertyRow = ({
           !["object", "array", "boolean"].includes(currentRowState.type) &&
           renderInput({
             onChange: (value) => {
-              setSchemaProperty(`${getPropertyPath(path)}enum`, value as string[]);
+              setSchemaProperty(
+                `${getPropertyPath(path)}enum`,
+                value as string[]
+              );
             },
             value: currentRowState.enum as string[],
             type: "enum",
@@ -91,6 +103,7 @@ export const JsonSchemaPropertyRow = ({
           />
         )}
         {path &&
+          !isArrayItems &&
           renderRemovePropertyButton({
             onClick: () => removeSchemaProperty(path),
           })}
@@ -106,7 +119,6 @@ export const JsonSchemaPropertyRow = ({
         />
         <div>
           {currentRowIsObject &&
-            areChildrenCollapsed &&
             Object.keys(currentRowState.properties || {}).map((prop) => (
               <JsonSchemaPropertyRow
                 renderInput={renderInput}
@@ -125,7 +137,8 @@ export const JsonSchemaPropertyRow = ({
               renderRemovePropertyButton={renderRemovePropertyButton}
               renderPropertyName={renderPropertyName}
               path={`${getPropertyPath(path)}items`}
-              name={name}
+              name={`${name || ""} items`}
+              isArrayItems
             />
           )}
         </div>
