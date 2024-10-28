@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { type JSONSchema7 } from "../jsonSchemaTypings";
 import _ from "lodash";
+import { EmptyPropertyNameError } from "./errors";
 
 export const useJsonSchema = (
   init: JSONSchema7 = {},
@@ -10,6 +11,7 @@ export const useJsonSchema = (
   useEffect(() => {
     isFirstRender.current = false;
   }, []);
+  const [errors, setErrors] = useState<{ path: string; error: Error }[]>([]);
 
   const [schema, setSchema] = useState(init);
   useEffect(() => {
@@ -73,6 +75,16 @@ export const useJsonSchema = (
   };
 
   const addPropertyToObject = (path: string, property: string) => {
+    if (property.length === 0) {
+      setErrors((prev) => [
+        ...prev.filter((e) => e.path !== path),
+        {
+          path,
+          error: new EmptyPropertyNameError("Property name can't be empty"),
+        },
+      ]);
+      return;
+    }
     setSchema((prev) =>
       _.setWith(
         _.clone(prev),
@@ -81,11 +93,19 @@ export const useJsonSchema = (
         _.clone
       )
     );
+    setErrors((prev) =>
+      prev.filter(
+        (e) => e.path !== path && e.error instanceof EmptyPropertyNameError
+      )
+    );
   };
 
   const getPathState = (path?: string) => {
     return path ? getSchemaProperty(path) : schema;
   };
+
+  const getPathErrors = (path: string) =>
+    errors.filter((e) => e.path === path).map((e) => e.error);
 
   return {
     schema,
@@ -98,6 +118,7 @@ export const useJsonSchema = (
       getSchemaProperty,
       getPathState,
       getPropertyPath,
+      getPathErrors,
     },
   };
 };

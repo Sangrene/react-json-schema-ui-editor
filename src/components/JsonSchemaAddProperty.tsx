@@ -15,9 +15,9 @@ export const JsonSchemaAddProperty = ({
 }: JsonSchemaAddPropertyButtonProps) => {
   const {
     actions: { addPropertyToObject },
+    derived: { getPathErrors },
   } = useJsonSchemaContext();
   const [propertyToBeAdded, setPropertyToBeAdded] = useState("");
-
   return (
     <>
       {renderInput({
@@ -27,6 +27,7 @@ export const JsonSchemaAddProperty = ({
         field: "property",
         type: "string",
         value: propertyToBeAdded,
+        errors: getPathErrors(path || "").map((e) => e.message),
       })}
       {renderAddPropertyButton({
         onClick: () => {

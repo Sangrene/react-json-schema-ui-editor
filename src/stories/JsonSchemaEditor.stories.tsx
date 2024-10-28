@@ -26,14 +26,19 @@ Default.args = {
   renderRemovePropertyButton: ({ onClick }) => (
     <button onClick={onClick}>Remove</button>
   ),
-  renderInput: ({ onChange, value, type, field, options }) => {
+  renderInput: ({ onChange, value, type, field, options, errors }) => {
     if (type === "string") {
       return (
-        <input
-          type="text"
-          value={value}
-          onChange={(e) => onChange(e.target.value || "")}
-        />
+        <>
+          <input
+            type="text"
+            value={value}
+            onChange={(e) => onChange(e.target.value || "")}
+          />
+          {errors?.map((err) => (
+            <span key={err}>{err}</span>
+          ))}
+        </>
       );
     }
     if (type === "float" || type === "integer") {
@@ -74,7 +79,6 @@ Default.args = {
     }
   },
 };
-
 
 export const Empty = Editor.bind({});
 Empty.args = {
@@ -134,4 +138,4 @@ Empty.args = {
       return <>ENUM</>;
     }
   },
-}
+};

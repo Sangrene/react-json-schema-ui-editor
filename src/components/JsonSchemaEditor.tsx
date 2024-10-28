@@ -12,6 +12,7 @@ export interface InputInputParams {
   field: (typeof jsonSchemaPossibleFields)[number];
   options?: string[];
   type: (typeof jsonSchemaPossibleFieldType)[number];
+  errors?: string[];
 }
 
 export interface ButtonInputParams {
