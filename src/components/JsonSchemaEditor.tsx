@@ -22,6 +22,11 @@ export interface ButtonInputParams {
 export interface PropertyNameInputParams {
   propertyName: string;
 }
+
+export interface CollapseButtonInputParams {
+  onClick: () => void;
+  isCollapsed: boolean;
+}
 export interface JsonSchemaEditorProps {
   initialSchema?: JSONSchema7;
   path?: string;
@@ -29,6 +34,7 @@ export interface JsonSchemaEditorProps {
   renderAddPropertyButton: (p: ButtonInputParams) => React.ReactNode;
   renderRemovePropertyButton: (p: ButtonInputParams) => React.ReactNode;
   renderPropertyName: (p: PropertyNameInputParams) => React.ReactNode;
+  renderCollapseButton?: (p: CollapseButtonInputParams) => React.ReactNode;
   onChange?: (json: JSONSchema7) => any;
 }
 
@@ -38,6 +44,7 @@ export const JsonSchemaEditor = ({
   renderAddPropertyButton,
   renderRemovePropertyButton,
   renderPropertyName,
+  renderCollapseButton,
   onChange,
 }: JsonSchemaEditorProps) => {
   return (
@@ -47,6 +54,7 @@ export const JsonSchemaEditor = ({
         renderAddPropertyButton={renderAddPropertyButton}
         renderRemovePropertyButton={renderRemovePropertyButton}
         renderPropertyName={renderPropertyName}
+        renderCollapseButton={renderCollapseButton}
       />
     </JsonSchemaContextProvider>
   );

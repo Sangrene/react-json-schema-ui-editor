@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useJsonSchemaContext } from "./JsonSchemaContext";
 import type {
   ButtonInputParams,
+  CollapseButtonInputParams,
   InputInputParams,
   PropertyNameInputParams,
 } from "./JsonSchemaEditor";
@@ -16,6 +17,7 @@ export interface JsonSchemaPropertyRowProps {
   renderAddPropertyButton: (p: ButtonInputParams) => React.ReactNode;
   renderRemovePropertyButton: (p: ButtonInputParams) => React.ReactNode;
   renderPropertyName?: (p: PropertyNameInputParams) => React.ReactNode;
+  renderCollapseButton?: (p: CollapseButtonInputParams) => React.ReactNode;
   name?: string;
   key?: string;
   isArrayItems?: boolean;
@@ -28,6 +30,7 @@ export const JsonSchemaPropertyRow = ({
   renderAddPropertyButton,
   renderRemovePropertyButton,
   renderPropertyName,
+  renderCollapseButton,
   isArrayItems,
 }: JsonSchemaPropertyRowProps) => {
   const {
@@ -38,12 +41,22 @@ export const JsonSchemaPropertyRow = ({
   const currentRowState = getPathState(path);
   const currentRowIsObject = currentRowState.type === "object";
   const currentRowIsArray = currentRowState.type === "array";
+  const [isRowCollapsed, setRowCollapsed] = useState(currentRowIsObject);
 
+  const toggleCollapse = () => {
+    setRowCollapsed((p) => !p);
+  };
   return (
     <div
       style={{ marginLeft: path ? "16px" : 0, marginTop: path ? "16px" : 0 }}
     >
       <div style={{ display: "flex", alignItems: "start" }}>
+        {renderCollapseButton &&
+          currentRowIsObject &&
+          renderCollapseButton({
+            onClick: toggleCollapse,
+            isCollapsed: isRowCollapsed,
+          })}
         {name &&
           renderPropertyName &&
           renderPropertyName({ propertyName: name })}
@@ -119,12 +132,14 @@ export const JsonSchemaPropertyRow = ({
         />
         <div>
           {currentRowIsObject &&
+            !isRowCollapsed &&
             Object.keys(currentRowState.properties || {}).map((prop) => (
               <JsonSchemaPropertyRow
                 renderInput={renderInput}
                 renderAddPropertyButton={renderAddPropertyButton}
                 renderRemovePropertyButton={renderRemovePropertyButton}
                 renderPropertyName={renderPropertyName}
+                renderCollapseButton={renderCollapseButton}
                 key={prop}
                 path={`${getPropertyPath(path)}properties.${prop}`}
                 name={prop}
@@ -136,6 +151,7 @@ export const JsonSchemaPropertyRow = ({
               renderAddPropertyButton={renderAddPropertyButton}
               renderRemovePropertyButton={renderRemovePropertyButton}
               renderPropertyName={renderPropertyName}
+              renderCollapseButton={renderCollapseButton}
               path={`${getPropertyPath(path)}items`}
               name={`${name || ""} items`}
               isArrayItems

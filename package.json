@@ -18,7 +18,8 @@
     "build:docs": "ladle build -o docs --base ./",
     "build:lib": "tsup",
     "dev": "ladle serve",
-    "preview": "ladle preview"
+    "preview": "ladle preview",
+    "test": "vitest"
   },
   "tsup": {
     "dts": true,
@@ -41,13 +42,18 @@
   "license": "MIT",
   "devDependencies": {
     "@ladle/react": "^4.1.1",
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.0.1",
     "@types/lodash": "^4.17.7",
     "@types/react": "^18.3.8",
     "@types/react-dom": "^18.3.0",
+    "jsdom": "^25.0.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "tsup": "^8.3.0",
-    "typescript": "^5.6.2"
+    "typescript": "^5.6.2",
+    "vitest": "^2.1.4"
   },
   "peerDependencies": {
     "react": "^18",

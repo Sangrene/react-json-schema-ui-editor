@@ -13,7 +13,7 @@ export const useJsonSchema = (
   }, []);
   const [errors, setErrors] = useState<{ path: string; error: Error }[]>([]);
 
-  const [schema, setSchema] = useState(init);
+  const [schema, setSchema] = useState(_.cloneDeep(init));
   useEffect(() => {
     if (onChange && !isFirstRender.current) {
       onChange(schema);
@@ -34,13 +34,13 @@ export const useJsonSchema = (
         property === "array"
       ) {
         return _.setWith(
-          _.setWith(_.clone(prev), path, property, _.clone),
+          _.setWith(_.cloneDeep(prev), path, property, _.cloneDeep),
           `${getPropertyPath(splittedPath.slice(0, -1).join("."))}items`,
           { type: "string" },
-          _.clone
+          _.cloneDeep
         );
       }
-      return _.setWith(_.clone(prev), path, property, _.clone);
+      return _.setWith(_.cloneDeep(prev), path, property, _.cloneDeep);
     });
   };
 
@@ -48,24 +48,19 @@ export const useJsonSchema = (
     setSchema((prev) => {
       const splitedPath = propertyPath.split(".");
       if (splitedPath.length < 2) {
-        return prev;
+        const newSchema = _.cloneDeep(prev);
+        delete newSchema[splitedPath[0] as keyof JSONSchema7];
+        return newSchema;
       }
-      if (splitedPath.length === 2) {
-        const newProperties = _.clone(prev.properties)!;
-        delete newProperties[splitedPath[1]];
-        return _.setWith(_.clone(prev), `properties`, newProperties, _.clone);
-      }
-      const propertyName = splitedPath[splitedPath.length - 1];
-      const parentObjectPath = splitedPath
-        .filter((_, index) => index < splitedPath.length - 2)
-        .join(".");
-      const properties = _.get(schema, parentObjectPath).properties;
-      delete properties[propertyName];
+      const parentObjectPath = splitedPath.slice(0, -1).join(".");
+      const parentObject = _.get(prev, parentObjectPath);
+      const propertyBeingRemoved = splitedPath[splitedPath.length - 1];
+      delete parentObject[propertyBeingRemoved];
       return _.setWith(
-        _.clone(prev),
-        `${parentObjectPath}.properties`,
-        properties,
-        _.clone
+        _.cloneDeep(prev),
+        parentObjectPath,
+        parentObject,
+        _.cloneDeep
       );
     });
   };
@@ -87,10 +82,10 @@ export const useJsonSchema = (
     }
     setSchema((prev) =>
       _.setWith(
-        _.clone(prev),
+        _.cloneDeep(prev),
         `${path ? `${path}.` : ""}properties.${property}`,
         { type: "string" },
-        _.clone
+        _.cloneDeep
       )
     );
     setErrors((prev) =>

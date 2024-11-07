@@ -1,5 +1,4 @@
-import React from "react";
-import type { Story, StoryDefault } from "@ladle/react";
+import { action, type Story, type StoryDefault } from "@ladle/react";
 import {
   JsonSchemaEditor,
   type JsonSchemaEditorProps,
@@ -17,6 +16,7 @@ const Editor: Story<JsonSchemaEditorProps> = (args) => (
 export const Default = Editor.bind({});
 Default.args = {
   initialSchema: schema1,
+  onChange: action("onChange"),
   renderPropertyName: ({ propertyName }) => (
     <h6 style={{ color: "red" }}>{propertyName}</h6>
   ),
@@ -25,6 +25,9 @@ Default.args = {
   ),
   renderRemovePropertyButton: ({ onClick }) => (
     <button onClick={onClick}>Remove</button>
+  ),
+  renderCollapseButton: ({ isCollapsed, onClick }) => (
+    <button onClick={onClick}>{isCollapsed ? ">" : "v"}</button>
   ),
   renderInput: ({ onChange, value, type, field, options, errors }) => {
     if (type === "string") {
@@ -82,6 +85,7 @@ Default.args = {
 
 export const Empty = Editor.bind({});
 Empty.args = {
+  onChange: action("onChange"),
   renderPropertyName: ({ propertyName }) => (
     <h6 style={{ color: "red" }}>{propertyName}</h6>
   ),

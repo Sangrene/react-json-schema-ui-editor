@@ -14,6 +14,7 @@ const JsonSchemaContext = createContext<ReturnType<typeof useJsonSchema>>({
     getSchemaProperty: () => ({}),
     getPathState: () => ({}),
     getPropertyPath: () => ".",
+    getPathErrors: () => []
   },
 });
 

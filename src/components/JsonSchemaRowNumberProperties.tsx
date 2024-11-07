@@ -6,16 +6,22 @@ export const JsonSchemaRowNumberProperties = ({
   path,
 }: JsonSchemaPropertyRowProps) => {
   const {
-    derived,
-    actions: { setSchemaProperty },
+    derived: { getPropertyPath, getPathState },
+    actions: { setSchemaProperty, removeSchemaProperty },
   } = useJsonSchemaContext();
-  const currentRowState = derived.getPathState(path);
-
+  const currentRowState = getPathState(path);
   return (
     <>
       {renderInput({
         onChange: (value) => {
-          setSchemaProperty(`${path}.minimum`, Number(value) as number);
+          if (typeof value === "string" && value.length === 0) {
+            removeSchemaProperty(`${getPropertyPath(path)}minimum`);
+            return;
+          }
+          setSchemaProperty(
+            `${getPropertyPath(path)}minimum`,
+            Number(value) as number
+          );
         },
         value: currentRowState.minimum,
         type: "float",
@@ -23,7 +29,14 @@ export const JsonSchemaRowNumberProperties = ({
       })}
       {renderInput({
         onChange: (value) => {
-          setSchemaProperty(`${path}.maximum`, Number(value) as number);
+          if (typeof value === "string" && value.length === 0) {
+            removeSchemaProperty(`${getPropertyPath(path)}maximum`);
+            return;
+          }
+          setSchemaProperty(
+            `${getPropertyPath(path)}maximum`,
+            Number(value) as number
+          );
         },
         value: currentRowState.maximum,
         type: "float",
