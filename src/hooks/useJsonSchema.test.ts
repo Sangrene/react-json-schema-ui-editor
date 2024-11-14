@@ -81,6 +81,4 @@ describe("useJsonSchema hook", () => {
       type: "string",
     });
   });
-
-  
 });

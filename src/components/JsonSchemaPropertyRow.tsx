@@ -98,6 +98,16 @@ export const JsonSchemaPropertyRow = ({
           !["object", "array", "boolean"].includes(currentRowState.type) &&
           renderInput({
             onChange: (value) => {
+              if (
+                currentRowState.type === "integer" ||
+                currentRowState.type === "number"
+              ) {
+                setSchemaProperty(
+                  `${getPropertyPath(path)}enum`,
+                  (value as (string | number)[]).map((val) => Number(val))
+                );
+                return;
+              }
               setSchemaProperty(
                 `${getPropertyPath(path)}enum`,
                 value as string[]
