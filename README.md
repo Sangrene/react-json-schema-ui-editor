@@ -1,4 +1,5 @@
 ![NPM Version](https://img.shields.io/npm/v/react-json-schema-ui-editor)
+![Tests Status](https://github.com/Sangrene/react-json-schema-ui-editor/actions/workflows/tests.yml/badge.svg)
 # React Json Schema Editor
 A configurable React component to display and edit a JSON Schema.
 

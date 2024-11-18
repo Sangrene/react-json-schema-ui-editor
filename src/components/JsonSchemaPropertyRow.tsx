@@ -123,6 +123,9 @@ export const JsonSchemaPropertyRow = ({
             renderAddPropertyButton={renderAddPropertyButton}
             renderInput={renderInput}
             path={path}
+            onClickAddProperty={() => {
+              if (isRowCollapsed) setRowCollapsed(false);
+            }}
           />
         )}
         {path &&

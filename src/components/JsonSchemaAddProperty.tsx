@@ -5,6 +5,7 @@ import { useJsonSchemaContext } from "./JsonSchemaContext";
 interface JsonSchemaAddPropertyButtonProps {
   renderInput: (p: InputInputParams) => React.ReactNode;
   renderAddPropertyButton: (p: ButtonInputParams) => React.ReactNode;
+  onClickAddProperty?: () => void;
   path?: string;
 }
 
@@ -12,6 +13,7 @@ export const JsonSchemaAddProperty = ({
   renderAddPropertyButton,
   renderInput,
   path,
+  onClickAddProperty,
 }: JsonSchemaAddPropertyButtonProps) => {
   const {
     actions: { addPropertyToObject },
@@ -33,6 +35,7 @@ export const JsonSchemaAddProperty = ({
         onClick: () => {
           addPropertyToObject(path || "", propertyToBeAdded);
           setPropertyToBeAdded("");
+          if (onClickAddProperty) onClickAddProperty();
         },
       })}
     </>
