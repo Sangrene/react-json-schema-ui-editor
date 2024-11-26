@@ -10,6 +10,7 @@ import type { JSONSchema7TypeName } from "jsonSchemaTypings";
 import { jsonSchemaAvailableTypes } from "jsonSchemaDescriptor";
 import { JsonSchemaAddProperty } from "./JsonSchemaAddProperty";
 import { JsonSchemaRowNumberProperties } from "./JsonSchemaRowNumberProperties";
+import { JsonSchemaRowStringProperties } from "./JsonSchemaRowStringProperties";
 
 export interface JsonSchemaPropertyRowProps {
   path?: string;
@@ -87,6 +88,15 @@ export const JsonSchemaPropertyRow = ({
         {(currentRowState.type === "number" ||
           currentRowState.type === "integer") && (
           <JsonSchemaRowNumberProperties
+            renderAddPropertyButton={renderAddPropertyButton}
+            renderInput={renderInput}
+            path={path}
+            renderRemovePropertyButton={renderRemovePropertyButton}
+            name={name}
+          />
+        )}
+        {currentRowState.type === "string" && (
+          <JsonSchemaRowStringProperties
             renderAddPropertyButton={renderAddPropertyButton}
             renderInput={renderInput}
             path={path}
