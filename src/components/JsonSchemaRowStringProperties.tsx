@@ -23,7 +23,7 @@ export const JsonSchemaRowStringProperties = ({
         value: currentRowState.format,
         type: "select",
         field: "format",
-        options: ["date", "time", "date-time"],
+        options: ["", "date", "time", "date-time"],
       })}
     </>
   );
