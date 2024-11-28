@@ -81,4 +81,16 @@ describe("useJsonSchema hook", () => {
       type: "string",
     });
   });
+
+  test("When setting property with value of length 0 or undefined, remove the property instead", () => {
+    const { result } = renderHook(() => useJsonSchema(schema1));
+    act(() => {
+      result.current.actions.setSchemaProperty("title", "");
+      result.current.actions.setSchemaProperty("enum", []);
+    });
+
+    expect(result.current.derived.getSchemaProperty("title")).toBeUndefined()
+    expect(result.current.derived.getSchemaProperty("enum")).toBeUndefined()
+
+  })
 });

@@ -27,6 +27,14 @@ export const useJsonSchema = (
     path: `${string}.${K}` | K,
     property: JSONSchema7[K]
   ) => {
+    if (
+      typeof property === "undefined" ||
+      (typeof property === "string" && property.length === 0) ||
+      (Array.isArray(property) && property.length === 0)
+    ) {
+      removeSchemaProperty(path);
+      return;
+    }
     setSchema((prev) => {
       const splittedPath = path.split(".");
       if (
