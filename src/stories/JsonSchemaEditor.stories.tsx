@@ -29,7 +29,13 @@ Default.args = {
   renderCollapseButton: ({ isCollapsed, onClick }) => (
     <button onClick={onClick}>{isCollapsed ? ">" : "v"}</button>
   ),
-  renderInput: ({ onChange, value, type, field, options, errors }) => {
+  renderInput: ({ onChange, value, type, field, options, errors, path }) => {
+    if(path === "") {
+      if(field === "type") {
+        return <>ROOT</>
+      }
+      return <></>
+    }
     if (type === "string") {
       return (
         <>

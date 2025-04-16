@@ -10,6 +10,7 @@ export interface InputInputParams {
   onChange: (value: string | number | string[]) => void;
   value?: string | number | string[];
   field: (typeof jsonSchemaPossibleFields)[number];
+  path: string;
   options?: string[];
   type: (typeof jsonSchemaPossibleFieldType)[number];
   errors?: string[];

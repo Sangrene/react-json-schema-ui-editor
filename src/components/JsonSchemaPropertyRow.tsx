@@ -73,6 +73,7 @@ export const JsonSchemaPropertyRow = ({
           type: "select",
           field: "type",
           options: [...jsonSchemaAvailableTypes],
+          path: path || "",
         })}
         {renderInput({
           onChange: (value) => {
@@ -84,6 +85,7 @@ export const JsonSchemaPropertyRow = ({
           value: currentRowState.description,
           type: "bigString",
           field: "description",
+          path: path || "",
         })}
         {(currentRowState.type === "number" ||
           currentRowState.type === "integer") && (
@@ -126,6 +128,7 @@ export const JsonSchemaPropertyRow = ({
             value: currentRowState.enum as string[],
             type: "enum",
             field: "enum",
+            path: path || "",
           })}
 
         {currentRowIsObject && (
