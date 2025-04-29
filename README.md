@@ -2,6 +2,7 @@
 ![Tests Status](https://github.com/Sangrene/react-json-schema-ui-editor/actions/workflows/tests.yml/badge.svg)
 # React Json Schema Editor
 A configurable React component to display and edit a JSON Schema.
+Try it in this [Code Sandbox](https://codesandbox.io/p/sandbox/qcn78z).
 
 ## How to use
 Coming from a story:
